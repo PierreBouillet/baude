@@ -21,30 +21,17 @@ import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 
+import stubs.PrivateStub;
+import stubs.PrivateStubImpl;
+
 public class MainView extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainView frame = new MainView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public MainView() {
+	public MainView(PrivateStubImpl stub) {
 		setTitle("PolyFace");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -63,33 +50,30 @@ public class MainView extends JFrame {
 		JMenu mnMur = new JMenu("Mur");
 		menuBar.add(mnMur);
 		
+		MenuBarMethod menuMethod = new MenuBarMethod(stub);
+		
 		JMenuItem mntmVoirMonMur = new JMenuItem("Voir mon mur");
 		mnMur.add(mntmVoirMonMur);
 		mntmVoirMonMur.setActionCommand("Voir mon mur");
-		mntmVoirMonMur.addActionListener(new MenuBarMethod());
-		
-		JMenuItem mntmVisiterLeMur = new JMenuItem("Visiter le mur d'un ami");
-		mnMur.add(mntmVisiterLeMur);
-		mntmVisiterLeMur.setActionCommand("Visiter le mur d'un ami");
-		mntmVisiterLeMur.addActionListener(new MenuBarMethod());
-		
+		mntmVoirMonMur.addActionListener(menuMethod);
+				
 		JMenu mnAmis = new JMenu("Amis");
 		menuBar.add(mnAmis);
 		
 		JMenuItem mntmListeDeMes = new JMenuItem("Liste de mes amis");
 		mnAmis.add(mntmListeDeMes);
 		mntmListeDeMes.setActionCommand("Liste de mes amis");
-		mntmListeDeMes.addActionListener(new MenuBarMethod());
+		mntmListeDeMes.addActionListener( menuMethod);
 		
 		JMenuItem mntmAjouterUnAmi = new JMenuItem("Ajouter un ami");
 		mnAmis.add(mntmAjouterUnAmi);
 		mntmAjouterUnAmi.setActionCommand("Ajouter un ami");
-		mntmAjouterUnAmi.addActionListener(new MenuBarMethod());
+		mntmAjouterUnAmi.addActionListener( menuMethod);
 		
 		JMenuItem mntmVoirMesDemandes = new JMenuItem("Voir mes demandes d'ami");
 		mnAmis.add(mntmVoirMesDemandes);
 		mntmVoirMesDemandes.setActionCommand("Voir mes demandes d'ami");
-		mntmVoirMesDemandes.addActionListener(new MenuBarMethod());
+		mntmVoirMesDemandes.addActionListener(menuMethod);
 		
 		JSplitPane splitPane_1 = new JSplitPane();
 		splitPane.setRightComponent(splitPane_1);
@@ -107,27 +91,35 @@ public class MainView extends JFrame {
 		
 		JLabel lblBienvenueSurPolyface = new JLabel("  Bienvenue sur PolyFace  ");
 		splitPane_1.setLeftComponent(lblBienvenueSurPolyface);
+
 	}
 	
 	public class MenuBarMethod implements ActionListener{
+		
+		private PrivateStubImpl stub;
+		
+		public MenuBarMethod(PrivateStubImpl stub){
+			this.stub=stub;
+		}
 		
 		@Override
 	    public void actionPerformed(ActionEvent e)
 	    {
 	        if("Voir mon mur".equals(e.getActionCommand())){
-	            JOptionPane.showMessageDialog(null, "Selected Item: " + e.getActionCommand());
-	        }
-	        if("Visiter le mur d'un ami".equals(e.getActionCommand())){
-	            JOptionPane.showMessageDialog(null, "Selected Item: " + e.getActionCommand());
+	            WallView view = new WallView(stub);
+	            view.show();
 	        }
 	        if("Liste de mes amis".equals(e.getActionCommand())){
-	            JOptionPane.showMessageDialog(null, "Selected Item: " + e.getActionCommand());
+	            FriendsListView view = new FriendsListView(stub.getFriends());
+	            view.show();
 	        }
 	        if("Ajouter un ami".equals(e.getActionCommand())){
-	            JOptionPane.showMessageDialog(null, "Selected Item: " + e.getActionCommand());
+	            SearchUserView view = new SearchUserView(stub);
+	            view.show();
 	        }
 	        if("Voir mes demandes d'ami".equals(e.getActionCommand())){
-	            JOptionPane.showMessageDialog(null, "Selected Item: " + e.getActionCommand());
+	            ListWaitingAcceptanceView view = new ListWaitingAcceptanceView(stub);
+	            view.show();
 	        }
 	    }
 

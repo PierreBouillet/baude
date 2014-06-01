@@ -1,5 +1,7 @@
 package main;
 
+import graphicalInterface.MainView;
+
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -34,7 +36,9 @@ public class User1Test {
 		    	registry.rebind(publicStub.getPersonInfo(), publicStub);
 		    }
 			
-			new ConsoleMenu(privateStub);
+			//new ConsoleMenu(privateStub);
+			MainView view = new MainView(privateStub);
+			view.show();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -23,6 +24,8 @@ import java.rmi.RemoteException;
 import javax.swing.Box;
 
 import stubs.PrivateStub;
+import stubs.PrivateStubImpl;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 
@@ -34,7 +37,7 @@ public class WallView extends JFrame {
 	 * Create the frame.
 	 */
 	public WallView(PrivateStub stub) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 515, 352);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -44,14 +47,6 @@ public class WallView extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		JButton btnNewButton = new JButton("Poster");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		panel_1.add(btnNewButton);
 
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setResizeWeight(0.8);
@@ -73,13 +68,57 @@ public class WallView extends JFrame {
 		splitPane.setLeftComponent(textPane);
 
 		try {
-
 			for(String s : stub.getWall()){
 				textPane.setText(textPane.getText() + "\n" + s);
 			}
-
 		} catch (RemoteException e) {
-			System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+			JOptionPane.showMessageDialog(this, "Un probleme réseau est survenue veuillez reessayer plus tard");
+		}
+		
+		ButtonMethod buttonMethod = new ButtonMethod(textPane_1, stub, textPane,this);
+		
+		JButton btnNewButton = new JButton("Poster");
+		panel_1.add(btnNewButton);
+		btnNewButton.setActionCommand("Poster");
+		btnNewButton.addActionListener(buttonMethod);
+	}
+	
+	public class ButtonMethod implements ActionListener{
+		
+		private JTextPane textPane;
+		private JTextPane wall;
+		private PrivateStub stub;
+		private JFrame frame;
+		
+		public ButtonMethod(JTextPane text, PrivateStub stub, JTextPane wall, JFrame frame){
+			this.textPane = text;
+			this.stub=stub;
+			this.wall = wall;
+			this.frame=frame;
+		}
+		
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if("Poster".equals(e.getActionCommand())){
+				try {
+					stub.addMessageOnWall(textPane.getText());
+				} catch (RemoteException ex) {
+					System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+				}
+				textPane.setText("");
+				
+				wall.setText("");
+				try {
+					for(String s : stub.getWall()){
+						wall.setText(wall.getText() + "\n" + s);
+					}
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(frame, "Un probleme réseau est survenue veuillez reessayer plus tard");
+				}
+			}
+			
 		}
 	}
 
