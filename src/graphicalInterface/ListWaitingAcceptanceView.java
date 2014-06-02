@@ -66,6 +66,11 @@ public class ListWaitingAcceptanceView extends JFrame {
 		panel.add(btnAccept);
 		btnAccept.setActionCommand("Accepter Comme Ami");
 		btnAccept.addActionListener(buttonMethod);
+		
+		JButton btnRefuse = new JButton("Refuser");
+		panel.add(btnRefuse);
+		btnRefuse.setActionCommand("Refuser");
+		btnRefuse.addActionListener(buttonMethod);
 	}
 
 	public class ButtonMethod implements ActionListener{
@@ -95,6 +100,7 @@ public class ListWaitingAcceptanceView extends JFrame {
 						PublicStub publicFriendStub = waitingAcceptance.get(list.getSelectedIndex());
 						PrivateStubSmartProxy privateFriendStub = publicFriendStub.acceptInvitation(stub.getSmartProxy());
 						stub.getFriends().add(privateFriendStub);
+						stub.getWaitingAcceptance().remove(publicFriendStub);
 						listModel.remove(list.getSelectedIndex());
 					}
 					catch (RemoteException e1) {
@@ -104,6 +110,25 @@ public class ListWaitingAcceptanceView extends JFrame {
 				}
 				else
 					JOptionPane.showMessageDialog(frame, "Selectionner d'abord une personne dans la liste");
+			}
+			
+			
+			if("Refuser".equals(e.getActionCommand())){
+				int selected = list.getSelectedIndex();
+				if(selected!=-1){
+					try {
+						PublicStub publicFriendStub = waitingAcceptance.get(list.getSelectedIndex());
+						PrivateStubSmartProxy privateFriendStub = publicFriendStub.acceptInvitation(stub.getSmartProxy());
+						stub.getWaitingAcceptance().remove(publicFriendStub);
+						listModel.remove(list.getSelectedIndex());
+					}
+					catch (RemoteException e1) {
+						JOptionPane.showMessageDialog(frame, "Un probleme r�seau est survenue veuillez reessayer plus tard");
+					}
+
+				}
+				else
+					JOptionPane.showMessageDialog(frame, "Selectionner d'abord une personne dans la liste");	
 			}
 
 		}

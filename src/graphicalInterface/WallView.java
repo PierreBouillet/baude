@@ -112,7 +112,7 @@ public class WallView extends JFrame {
 				wall.setText("");
 				try {
 					for(String s : stub.getWall()){
-						wall.setText(wall.getText() + "\n" + s);
+						wall.setText(wall.getText() + "\n" + stub.getName() + " a posté :\n" + s);
 					}
 				} catch (RemoteException e1) {
 					JOptionPane.showMessageDialog(frame, "Un probleme réseau est survenue veuillez reessayer plus tard");

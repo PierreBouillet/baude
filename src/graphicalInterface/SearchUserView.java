@@ -76,7 +76,7 @@ public class SearchUserView extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 		JList list = new JList(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		
+
 		JScrollPane listScroller = new JScrollPane(list);
 		splitPane_4.setLeftComponent(listScroller);
 
@@ -91,7 +91,7 @@ public class SearchUserView extends JFrame {
 		splitPane_2.setRightComponent(textField_2);
 		textField_2.setColumns(10);
 
-		
+
 
 		JButton btnAjouterCommeAmi = new JButton("Ajouter Comme ami");
 		panel.add(btnAjouterCommeAmi);
@@ -147,9 +147,20 @@ public class SearchUserView extends JFrame {
 			}
 
 			if("Ajouter Comme ami".equals(e.getActionCommand())){
-				AddAFriendView view = new AddAFriendView(stub, friendStub);
-				view.show();
-				frame.dispose();
+				try {
+					
+					if(friendStub.getPersonInfo().equals(stub.getName())){
+						JOptionPane.showMessageDialog(frame, "Forever Alone");
+					}
+					else{
+						AddAFriendView view = new AddAFriendView(stub, friendStub);
+						view.show();
+						frame.dispose();
+					}
+					
+				} catch (RemoteException e1) {
+					JOptionPane.showMessageDialog(frame, "Un probleme réseau est survenue veuillez reessayer plus tard");
+				}
 
 			}
 
