@@ -21,9 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
-import stubs.PrivateStub;
-import stubs.PrivateStubImpl;
-import stubs.PublicStub;
+import stubs.*;
 
 public class ListWaitingAcceptanceView extends JFrame {
 
@@ -55,7 +53,7 @@ public class ListWaitingAcceptanceView extends JFrame {
 			try {
 				listModel.addElement(ps.getPersonInfo());
 			} catch (RemoteException e) {
-				JOptionPane.showMessageDialog(this, "Un probleme réseau est survenue veuillez reessayer plus tard");
+				JOptionPane.showMessageDialog(this, "Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 			}
 
 		JPanel panel = new JPanel();
@@ -95,12 +93,12 @@ public class ListWaitingAcceptanceView extends JFrame {
 				if(selected!=-1){
 					try {
 						PublicStub publicFriendStub = waitingAcceptance.get(list.getSelectedIndex());
-						PrivateStub privateFriendStub = publicFriendStub.acceptInvitation(stub);
+						PrivateStubSmartProxy privateFriendStub = publicFriendStub.acceptInvitation(stub.getSmartProxy());
 						stub.getFriends().add(privateFriendStub);
 						listModel.remove(list.getSelectedIndex());
 					}
 					catch (RemoteException e1) {
-						JOptionPane.showMessageDialog(frame, "Un probleme réseau est survenue veuillez reessayer plus tard");
+						JOptionPane.showMessageDialog(frame, "Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 					}
 
 				}

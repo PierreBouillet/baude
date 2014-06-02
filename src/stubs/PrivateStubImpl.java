@@ -1,5 +1,6 @@
 package stubs;
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -7,15 +8,16 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 
-public class PrivateStubImpl extends UnicastRemoteObject implements PrivateStub, Serializable {
+public class PrivateStubImpl extends UnicastRemoteObject implements Remote, PrivateStub, Serializable {
 
 	private String firstName;
 	private String lastName;
 	private String location;
 	private String job;
 	private PublicStubImpl publicStub;
+    private PrivateStubSmartProxy smartProxy;
 
-	private List<PrivateStub> friends;
+	private List<PrivateStubSmartProxy> friends;
 	private List<PublicStub> waitingAcceptance;
 
 	private List<String> wall;
@@ -30,8 +32,9 @@ public class PrivateStubImpl extends UnicastRemoteObject implements PrivateStub,
 		this.lastName=lastName;
 		this.job=job;
 		this.location=loc;
-		
-		friends = new ArrayList<PrivateStub>();
+	    this.smartProxy = new PrivateStubSmartProxy(this);
+
+		friends = new ArrayList<PrivateStubSmartProxy>();
 		waitingAcceptance = new ArrayList<PublicStub>();
 		wall = new ArrayList<String>();
 		notification = new ArrayList<String>();
@@ -41,15 +44,10 @@ public class PrivateStubImpl extends UnicastRemoteObject implements PrivateStub,
 		return (firstName + " " + lastName);
 	}
 
-	@Override
-	public List<String> getWallContent() {
-		return wall;
-	}
-
 	public void addMessageOnWall(String message) throws RemoteException{
 		wall.add(message);
 		for(PrivateStub s : friends){
-			s.notifyUser(getName() + " a posté un message sur son mur : " + message);
+			s.notifyUser(getName() + " a postï¿½ un message sur son mur : " + message);
 		}
 	}
 
@@ -93,11 +91,11 @@ public class PrivateStubImpl extends UnicastRemoteObject implements PrivateStub,
 		this.publicStub = publicStub;
 	}
 
-	public List<PrivateStub> getFriends() {
+	public List<PrivateStubSmartProxy> getFriends() {
 		return friends;
 	}
 
-	public void setFriends(List<PrivateStub> friends) {
+	public void setFriends(List<PrivateStubSmartProxy> friends) {
 		this.friends = friends;
 	}
 
@@ -134,6 +132,11 @@ public class PrivateStubImpl extends UnicastRemoteObject implements PrivateStub,
 			e.printStackTrace();
 		}
 	}
+
+    public PrivateStubSmartProxy getSmartProxy()
+    {
+        return (smartProxy);
+    }
 
 
 }

@@ -22,7 +22,7 @@ public class rmiHandler {
 	
 	public PublicStub searchUser(String firstName, String lastName){
 		try {
-			return (PublicStub) reg.lookup(firstName + " " + lastName);
+			return (PublicStub) (reg.lookup(firstName + " " + lastName));
 		} catch (Exception e) {
 			return null;
 		}

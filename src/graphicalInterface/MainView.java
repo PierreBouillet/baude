@@ -107,19 +107,19 @@ public class MainView extends JFrame {
 	    {
 	        if("Voir mon mur".equals(e.getActionCommand())){
 	            WallView view = new WallView(stub);
-	            view.show();
+                view.setVisible(true);
 	        }
 	        if("Liste de mes amis".equals(e.getActionCommand())){
 	            FriendsListView view = new FriendsListView(stub.getFriends());
-	            view.show();
+                view.setVisible(true);
 	        }
 	        if("Ajouter un ami".equals(e.getActionCommand())){
 	            SearchUserView view = new SearchUserView(stub);
-	            view.show();
+                view.setVisible(true);
 	        }
 	        if("Voir mes demandes d'ami".equals(e.getActionCommand())){
 	            ListWaitingAcceptanceView view = new ListWaitingAcceptanceView(stub);
-	            view.show();
+                view.setVisible(true);
 	        }
 	    }
 

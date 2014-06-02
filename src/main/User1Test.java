@@ -19,31 +19,27 @@ public class User1Test {
 	public static void main(String[] args) {
 		try {
 			
-			PrivateStubImpl privateStub = new PrivateStubImpl("William", "Tassoux", "Sophia-Antipolis", "Génie de l'eau");
-			PublicStubImpl publicStub = new PublicStubImpl(privateStub);
-			privateStub.setPublicStub(publicStub);
-			
-			Registry registry;
-			try{
-		    	registry=LocateRegistry.getRegistry(2004);
-		     	registry.rebind(publicStub.getPersonInfo(), publicStub);
-		    }
-			
-			catch(Exception e)
-		    {
-		    	System.out.println("------->"+e);
-		    	registry = LocateRegistry.createRegistry(2004);
-		    	registry.rebind(publicStub.getPersonInfo(), publicStub);
-		    }
-			
-			//new ConsoleMenu(privateStub);
-			MainView view = new MainView(privateStub);
-			view.show();
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+			PrivateStubImpl privateStub = new PrivateStubImpl("William", "Tassoux", "Sophia-Antipolis", "Gï¿½nie de l'eau");
+            PublicStubImpl publicStub = new PublicStubImpl(privateStub);
+            privateStub.setPublicStub(publicStub);
+
+            Registry registry;
+            try{
+                registry = LocateRegistry.getRegistry(2004);
+                registry.rebind(publicStub.getPersonInfo(), publicStub);
+            }catch(Exception e)
+            {
+                registry = LocateRegistry.createRegistry(2004);
+                registry.rebind(publicStub.getPersonInfo(), publicStub);
+            }
+
+            MainView view = new MainView(privateStub);
+            view.setVisible(true);
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -4,10 +4,7 @@ import java.rmi.RemoteException;
 import java.util.Scanner;
 
 import rmiHandler.rmiHandler;
-import stubs.PrivateStub;
-import stubs.PrivateStubImpl;
-import stubs.PublicStub;
-import stubs.PublicStubImpl;
+import stubs.*;
 
 public class ConsoleMenu {
 
@@ -68,7 +65,7 @@ public class ConsoleMenu {
 			}
 			
 		} catch (RemoteException e) {
-			System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+			System.out.println("Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 		}
 
 	}
@@ -95,13 +92,13 @@ public class ConsoleMenu {
 		try {
 			stub.addMessageOnWall(message);
 		} catch (RemoteException e) {
-			System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+			System.out.println("Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 		}
 	}
 
 	private void addFriend(){
 		Scanner sc = new Scanner(System.in);
-		System.out.print("Tapez le prénom de la personne que vous rechercher : ");
+		System.out.print("Tapez le prï¿½nom de la personne que vous rechercher : ");
 		String firstName = sc.nextLine();
 		System.out.print("Tapez le nom de la personne que vous rechercher : ");
 		String lastName = sc.nextLine();
@@ -109,11 +106,11 @@ public class ConsoleMenu {
 		PublicStub friendStub = rmiHandler.searchUser(firstName, lastName);
 
 		if(friendStub == null){
-			System.out.println("La personne que vous rechercher n'est pas sur notre réseau");
+			System.out.println("La personne que vous rechercher n'est pas sur notre rï¿½seau");
 			return;
 		}
 
-		System.out.println("Etes vous sur de vouloir ajouter " + firstName + " " + lastName + " à vos amis (y/n)");
+		System.out.println("Etes vous sur de vouloir ajouter " + firstName + " " + lastName + " ï¿½ vos amis (y/n)");
 		String confirm = sc.nextLine();
 		if(confirm.equals("y")){
 			System.out.println("Tapez votre message d'invitation : ");
@@ -121,7 +118,7 @@ public class ConsoleMenu {
 			try {
 				friendStub.invite(privateStub.getPublicStub(), message);
 			} catch (RemoteException e) {
-				System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+				System.out.println("Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 			}
 		}
 
@@ -134,7 +131,7 @@ public class ConsoleMenu {
 			try {
 				System.out.println(i + ") " + ps.getPersonInfo());
 			} catch (RemoteException e) {
-				System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+				System.out.println("Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 			}
 		}
 		Scanner sc = new Scanner(System.in);
@@ -144,7 +141,10 @@ public class ConsoleMenu {
 		if(choice==0) return;
 		else if(choice -1 >=0 && choice-1 <privateStub.getWaitingAcceptance().size()){
 			try {
-				privateStub.getFriends().add(privateStub.getWaitingAcceptance().get(choice-1).acceptInvitation(privateStub));
+                PrivateStubSmartProxy bambambam = privateStub.getSmartProxy();
+                PrivateStubSmartProxy bambombam = privateStub.getWaitingAcceptance().get(choice-1).acceptInvitation(bambambam);
+                privateStub.getFriends().add(bambombam);
+				//privateStub.getFriends().add(privateStub.getWaitingAcceptance().get(choice-1).acceptInvitation(privateStub.getSmartProxy()));
 			} catch (RemoteException e) {
 
 			}
@@ -167,7 +167,7 @@ public class ConsoleMenu {
 
 		} 
 		catch (RemoteException e) {
-			System.out.println("Un probleme réseau est survenue veuillez reessayer plus tard");
+			System.out.println("Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 			return;
 		}
 		Scanner sc = new Scanner(System.in);
@@ -178,7 +178,7 @@ public class ConsoleMenu {
 			addMessageOrConsultMenu(privateStub.getFriends().get(choice-1));
 		}
 		else{
-			System.out.println("Le parametre selectionné n'est pas correct");
+			System.out.println("Le parametre selectionnï¿½ n'est pas correct");
 			return;
 		}
 	}
@@ -196,7 +196,7 @@ public class ConsoleMenu {
 		case(0): return;
 		case(1):displayWall(stub);break;
 		case(2):addMessageToWall(stub);break;
-		default: System.out.println("Le parametre selectionné n'est pas correct");break;
+		default: System.out.println("Le parametre selectionnï¿½ n'est pas correct");break;
 		}
 	}
 

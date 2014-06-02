@@ -1,5 +1,6 @@
 package stubs;
 import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -19,7 +20,7 @@ public class PublicStubImpl extends UnicastRemoteObject implements PublicStub, S
 		if(! privateStub.getWaitingAcceptance().contains(publicStub)){
 			
 			privateStub.getWaitingAcceptance().add(publicStub);
-			privateStub.addNotification(publicStub.getPersonInfo() +"vous a ajouté comme ami");
+			publicStub.notifyInvitation(getPersonInfo());
 		}
 	}
 
@@ -29,9 +30,14 @@ public class PublicStubImpl extends UnicastRemoteObject implements PublicStub, S
 	}
 
 	@Override
-	public PrivateStub acceptInvitation(PrivateStub privateStub)  throws RemoteException{
+	public PrivateStubSmartProxy acceptInvitation(PrivateStubSmartProxy privateStub) throws RemoteException{
 		this.privateStub.getFriends().add(privateStub);
-		return this.privateStub;
+		return this.privateStub.getSmartProxy();
 	}
 
+    @Override
+    public void notifyInvitation(String name)
+    {
+        this.privateStub.addNotification(name + " vous a ajoutÃ© en ami");
+    }
 }

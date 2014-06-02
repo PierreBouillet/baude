@@ -19,6 +19,7 @@ import javax.swing.ListSelectionModel;
 
 import stubs.PrivateStub;
 import stubs.PrivateStubImpl;
+import stubs.PrivateStubSmartProxy;
 import stubs.PublicStub;
 
 import java.awt.FlowLayout;
@@ -33,7 +34,7 @@ public class FriendsListView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FriendsListView(List<PrivateStub> friends) {
+	public FriendsListView(List<PrivateStubSmartProxy> friends) {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -57,7 +58,7 @@ public class FriendsListView extends JFrame {
 			try {
 				listModel.addElement(ps.getName());
 			} catch (RemoteException e) {
-				JOptionPane.showMessageDialog(this, "Un probleme réseau est survenue veuillez reessayer plus tard");
+				JOptionPane.showMessageDialog(this, "Un probleme rï¿½seau est survenue veuillez reessayer plus tard");
 			}
 
 		JPanel panel = new JPanel();
@@ -75,10 +76,10 @@ public class FriendsListView extends JFrame {
 	public class ButtonMethod implements ActionListener{
 
 		private JList list;
-		private List<PrivateStub> friends;
+		private List<PrivateStubSmartProxy> friends;
 		private JFrame frame;
 
-		public ButtonMethod(List<PrivateStub> friends, JList list, JFrame frame){
+		public ButtonMethod(List<PrivateStubSmartProxy> friends, JList list, JFrame frame){
 			this.friends=friends;
 			this.list = list;
 			this.frame=frame;

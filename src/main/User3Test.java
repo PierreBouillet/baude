@@ -1,20 +1,20 @@
 package main;
 
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-
 import graphicalInterface.MainView;
 import stubs.PrivateStubImpl;
 import stubs.PublicStubImpl;
 
-public class User2Test {
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
+public class User3Test {
 
 
 	public static void main(String[] args) {
 		try {
 
-			PrivateStubImpl privateStub = new PrivateStubImpl("Pierre", "Bouillet", "Sophia-Antipolis", "Trap�ziste");
+			PrivateStubImpl privateStub = new PrivateStubImpl("Damien", "Viano", "Sophia-Antipolis", "RMIste");
 			PublicStubImpl publicStub = new PublicStubImpl(privateStub);
 			privateStub.setPublicStub(publicStub);
 
